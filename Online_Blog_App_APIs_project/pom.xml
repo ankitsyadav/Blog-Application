@@ -9,12 +9,12 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.blog</groupId>
-	<artifactId>Blog_App_API_Project</artifactId>
+	<artifactId>Online_Blog_App_APIs_project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Blog_App_API_Project</name>
-	<description>personal project for blog app api -backend</description>
+	<name>Online_Blog_App_APIs_project</name>
+	<description>This is a blogging back-end rest APIs APP</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
