@@ -6,7 +6,7 @@ What are we r going to build !!!
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/95612855/184532155-5e0438f3-b497-495c-bbe2-c06899d869ab.png)
 
 
-##* blogging application
+* blogging application
 ========================================================================================================
 - users can comment on blogs/article.
 - user should create , update , delete and list posts.
@@ -17,7 +17,7 @@ What are we r going to build !!!
 - post include one photo .
 ========================================================================================================
 
-##* technicalities
+* technicalities
 ========================================================================================================
 - login and register API.
 - Post API (includes PAGINATION and SORTING).
@@ -28,7 +28,7 @@ What are we r going to build !!!
 - document all rest APIs with help of SWAGGER.
 - AWS Deployemnt.
 ========================================================================================================
-##* TECH STACKS USED
+* TECH STACKS USED
 ========================================================================================================
 - Spring boot.
 - java 8+
