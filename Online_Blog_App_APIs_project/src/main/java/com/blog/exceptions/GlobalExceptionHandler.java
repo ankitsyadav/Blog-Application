@@ -22,13 +22,6 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ApiResponse>(apiresponse, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(CategoryNotFoundException.class)
-	public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(CategoryNotFoundException ex) {
-		String message = ex.getMessage();
-		ApiResponse apiresponse = new ApiResponse(message, false);
-		return new ResponseEntity<ApiResponse>(apiresponse, HttpStatus.NOT_FOUND);
-	}
-
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleMethodArgsNotValidException(MethodArgumentNotValidException ex) {
 

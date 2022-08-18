@@ -14,7 +14,6 @@ import com.blog.repositories.UserRepo;
 import com.blog.services.UserService;
 
 @Service
-
 public class UserServiceImpl implements UserService {
 
 	@Autowired

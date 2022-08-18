@@ -2,8 +2,6 @@ package com.blog.services;
 
 import java.util.List;
 
-import com.blog.entities.Post;
-import com.blog.entities.User;
 import com.blog.paylaods.PostDto;
 
 public interface PostService {
@@ -19,7 +17,7 @@ public interface PostService {
 
 //	get all post
 
-	List<PostDto> getAllPost();
+	List<PostDto> getAllPost(Integer pageNumber, Integer PageSize);
 
 //	get single post 
 	PostDto getPostById(Integer pid);
@@ -28,7 +26,7 @@ public interface PostService {
 	List<PostDto> getPostByCategory(Integer cid);
 
 //	get all post by user
-	List<PostDto> getPostByUser(User uid);
+	List<PostDto> getPostByUser(Integer uid);
 
 //	search post
 	List<PostDto> searchPosts(String keyword);

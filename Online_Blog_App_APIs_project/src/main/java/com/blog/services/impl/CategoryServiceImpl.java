@@ -1,7 +1,6 @@
 package com.blog.services.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -9,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blog.entities.Category;
-
-import com.blog.exceptions.CategoryNotFoundException;
 import com.blog.exceptions.ResourceNotFoundException;
 import com.blog.paylaods.CategoryDto;
-
 import com.blog.repositories.CategoryRepo;
 import com.blog.services.CategoryService;
 

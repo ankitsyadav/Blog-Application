@@ -1,15 +1,21 @@
 package com.blog.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.entities.Post;
+import com.blog.paylaods.ApiResponse;
 import com.blog.paylaods.PostDto;
 import com.blog.services.PostService;
 
@@ -27,6 +33,64 @@ public class PostController {
 
 		PostDto createdPostDto = this.ps.createPost(pdto, uid, cid);
 		return new ResponseEntity<PostDto>(createdPostDto, HttpStatus.CREATED);
+	}
+
+//	get by user Posts
+	@GetMapping("/user/{uid}/posts")
+	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Integer uid) {
+
+		List<PostDto> pdtoList = this.ps.getPostByUser(uid);
+
+		return new ResponseEntity<List<PostDto>>(pdtoList, HttpStatus.OK);
+	}
+
+//	get by user category
+	@GetMapping("/category/{cid}/posts")
+	public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable Integer cid) {
+
+		List<PostDto> pdtoList = this.ps.getPostByCategory(cid);
+
+		return new ResponseEntity<List<PostDto>>(pdtoList, HttpStatus.OK);
+	}
+
+//	 get all post 
+	@GetMapping("/posts")
+	public ResponseEntity<List<PostDto>> getAllPosts(
+			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+
+		List<PostDto> pdtoList = this.ps.getAllPost(pageNumber, pageSize);
+
+		return new ResponseEntity<List<PostDto>>(pdtoList, HttpStatus.OK);
+	}
+//	get post by ID
+
+	@GetMapping("/posts/{pid}")
+	public ResponseEntity<PostDto> getAllPosts(@PathVariable Integer pid) {
+
+		PostDto pdtoList = this.ps.getPostById(pid);
+
+		return new ResponseEntity<PostDto>(pdtoList, HttpStatus.OK);
+	}
+
+//	 delete post
+	@DeleteMapping("/posts/{pid}")
+	public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer pid) {
+
+		this.ps.deletePost(pid);
+
+		return new ResponseEntity<ApiResponse>(new ApiResponse("post deleted success", true), HttpStatus.OK);
+
+	}
+
+//	 update post
+	@PutMapping("/posts/{pid}")
+	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto pdto, @PathVariable Integer pid) {
+
+		PostDto pdtoUpdated = this.ps.updatePost(pdto, pid);
+
+		return new ResponseEntity<PostDto>(pdtoUpdated, HttpStatus.OK);
+
 	}
 
 }

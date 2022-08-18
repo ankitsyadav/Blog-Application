@@ -29,6 +29,7 @@ public class Post {
 
 	@ManyToOne
 	private Category category;
+
 	@ManyToOne
 	private User user;
 

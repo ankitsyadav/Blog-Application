@@ -1,12 +1,14 @@
 package com.blog.services.impl;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.hibernate.type.LocalDateTimeType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.blog.entities.Category;
@@ -49,38 +51,66 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostDto updatePost(PostDto pdto, Integer pid) {
-		// TODO Auto-generated method stub
-		return null;
+		Post p = this.pr.findById(pid).orElseThrow(() -> new ResourceNotFoundException("post", "post id ", pid));
+		p.setPtitle(pdto.getPtitle());
+		p.setPcontent(pdto.getPcontent());
+		p.setImageName(pdto.getImageName());
+
+		Post updatedPost = this.pr.save(p);
+		return this.mp.map(updatedPost, PostDto.class);
 	}
 
 	@Override
 	public void deletePost(Integer pid) {
-		// TODO Auto-generated method stub
+		Post p = this.pr.findById(pid).orElseThrow(() -> new ResourceNotFoundException("post", "post id ", pid));
+		this.pr.delete(p);
 
 	}
 
 	@Override
-	public List<PostDto> getAllPost() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize) {
+
+		Pageable p = PageRequest.of(pageNumber, pageSize);
+
+		Page<Post> pagePost = this.pr.findAll(p);
+		List<Post> posts = pagePost.getContent();
+		List<PostDto> pdtoPosts = posts.stream().map((p1) -> this.mp.map(p1, PostDto.class))
+				.collect(Collectors.toList());
+
+		return pdtoPosts;
 	}
 
 	@Override
 	public PostDto getPostById(Integer pid) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Post p = this.pr.findById(pid).orElseThrow(() -> new ResourceNotFoundException("post", "post id ", pid));
+
+		PostDto pdto = this.mp.map(p, PostDto.class);
+
+		return pdto;
 	}
 
 	@Override
 	public List<PostDto> getPostByCategory(Integer cid) {
-		// TODO Auto-generated method stub
-		return null;
+		Category cat = this.cr.findById(cid)
+				.orElseThrow(() -> new ResourceNotFoundException("category", "category id ", cid));
+		List<Post> pList = this.pr.findByCategory(cat);
+		List<PostDto> pdtoList = pList.stream().map((post) -> this.mp.map(post, PostDto.class))
+				.collect(Collectors.toList());
+
+		return pdtoList;
 	}
 
 	@Override
-	public List<PostDto> getPostByUser(User uid) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PostDto> getPostByUser(Integer uid) {
+
+		User user = this.ur.findById(uid).orElseThrow(() -> new ResourceNotFoundException("user", "user id ", uid));
+		List<Post> pList = this.pr.findByUser(user);
+
+//	
+		List<PostDto> pdtoList = pList.stream().map((p) -> this.mp.map(p, PostDto.class)).collect(Collectors.toList());
+
+		return pdtoList;
 	}
 
 	@Override
