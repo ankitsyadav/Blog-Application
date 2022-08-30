@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.blog.entities.Category;
@@ -16,6 +17,7 @@ import com.blog.entities.Post;
 import com.blog.entities.User;
 import com.blog.exceptions.ResourceNotFoundException;
 import com.blog.paylaods.PostDto;
+import com.blog.paylaods.PostResponse;
 import com.blog.repositories.CategoryRepo;
 import com.blog.repositories.PostReop;
 import com.blog.repositories.UserRepo;
@@ -68,16 +70,23 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize) {
+	public PostResponse getAllPost(Integer pageNumber, Integer pageSize, String sortBy) {
 
-		Pageable p = PageRequest.of(pageNumber, pageSize);
+		Pageable p = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 
 		Page<Post> pagePost = this.pr.findAll(p);
 		List<Post> posts = pagePost.getContent();
 		List<PostDto> pdtoPosts = posts.stream().map((p1) -> this.mp.map(p1, PostDto.class))
 				.collect(Collectors.toList());
+		PostResponse pr = new PostResponse();
+		pr.setContent(pdtoPosts);
+		pr.setPageNumber(pagePost.getNumber());
+		pr.setPageSize(pagePost.getSize());
+		pr.setTotalElements(pagePost.getTotalElements());
+		pr.setTotalPages(pagePost.getTotalPages());
+		pr.setLastPage(pagePost.isLast());
 
-		return pdtoPosts;
+		return pr;
 	}
 
 	@Override
@@ -113,10 +122,12 @@ public class PostServiceImpl implements PostService {
 		return pdtoList;
 	}
 
+//	serching
 	@Override
 	public List<PostDto> searchPosts(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Post> posts = this.pr.findByPtitleContaining(keyword);
+		List<PostDto> pdto = posts.stream().map((p) -> this.mp.map(p, PostDto.class)).collect(Collectors.toList());
+		return pdto;
 	}
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.paylaods.ApiResponse;
 import com.blog.paylaods.PostDto;
+import com.blog.paylaods.PostResponse;
 import com.blog.services.PostService;
 
 @RestController
@@ -55,13 +56,14 @@ public class PostController {
 
 //	 get all post 
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostDto>> getAllPosts(
-			@RequestParam(value = "pageNumber", defaultValue = "1", required = false) Integer pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+	public ResponseEntity<PostResponse> getAllPosts(
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy) {
 
-		List<PostDto> pdtoList = this.ps.getAllPost(pageNumber, pageSize);
+		PostResponse pr = this.ps.getAllPost(pageNumber, pageSize, sortBy);
 
-		return new ResponseEntity<List<PostDto>>(pdtoList, HttpStatus.OK);
+		return new ResponseEntity<PostResponse>(pr, HttpStatus.OK);
 	}
 //	get post by ID
 
@@ -90,6 +92,15 @@ public class PostController {
 		PostDto pdtoUpdated = this.ps.updatePost(pdto, pid);
 
 		return new ResponseEntity<PostDto>(pdtoUpdated, HttpStatus.OK);
+
+	}
+//	serach by title
+
+	@GetMapping("/posts/search/{keywords}")
+	public ResponseEntity<List<PostDto>> searchPostByTitle(@PathVariable String keywords) {
+		List<PostDto> pdto = this.ps.searchPosts(keywords);
+
+		return new ResponseEntity<List<PostDto>>(pdto, HttpStatus.OK);
 
 	}
 

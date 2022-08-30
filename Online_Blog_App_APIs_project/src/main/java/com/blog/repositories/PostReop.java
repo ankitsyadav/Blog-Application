@@ -14,4 +14,6 @@ public interface PostReop extends JpaRepository<Post, Integer> {
 
 	List<Post> findByCategory(Category category);
 
+	List<Post> findByPtitleContaining(String ptitle);
+
 }
