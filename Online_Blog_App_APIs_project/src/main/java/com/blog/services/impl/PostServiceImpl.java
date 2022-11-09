@@ -19,7 +19,7 @@ import com.blog.exceptions.ResourceNotFoundException;
 import com.blog.paylaods.PostDto;
 import com.blog.paylaods.PostResponse;
 import com.blog.repositories.CategoryRepo;
-import com.blog.repositories.PostReop;
+import com.blog.repositories.PostRepo;
 import com.blog.repositories.UserRepo;
 import com.blog.services.PostService;
 
@@ -27,7 +27,7 @@ import com.blog.services.PostService;
 public class PostServiceImpl implements PostService {
 
 	@Autowired
-	private PostReop pr;
+	private PostRepo pr;
 	@Autowired
 	private ModelMapper mp;
 	@Autowired
@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostService {
 				.orElseThrow(() -> new ResourceNotFoundException("category", "category id", cid));
 
 		Post post = this.mp.map(pdto, Post.class);
-		post.setImageName("default.png");
+		
 		post.setAddedDate(LocalDateTime.now());
 		post.setUser(user);
 		post.setCategory(category);
@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
 		Post p = this.pr.findById(pid).orElseThrow(() -> new ResourceNotFoundException("post", "post id ", pid));
 		p.setPtitle(pdto.getPtitle());
 		p.setPcontent(pdto.getPcontent());
-		p.setImageName(pdto.getImageName());
+		
 
 		Post updatedPost = this.pr.save(p);
 		return this.mp.map(updatedPost, PostDto.class);

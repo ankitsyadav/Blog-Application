@@ -1,8 +1,12 @@
 package com.blog.paylaods;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
+
+import com.blog.entities.Comment;
 
 import lombok.Data;
 
@@ -14,10 +18,9 @@ public class PostDto {
 	private String ptitle;
 	@NotBlank
 	private String pcontent;
-	private String imageName;
 	private LocalDateTime addedDate;
 
 	private CategoryDto category;
+	private Set<Comment> comments=new HashSet<>();
 
-	private UserDto user;
 }
